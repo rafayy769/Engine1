@@ -5,7 +5,7 @@
 
 int main()
 {
-    Game g(1080, 720, "Battle", "./Resources/chuttiya.png");
+    Game g(640, 480, "Battle", "./Resources/samplecharacter.png");
     g.run();
     return 0;
 }

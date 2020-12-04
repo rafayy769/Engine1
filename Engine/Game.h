@@ -4,7 +4,9 @@
 class Game
 {
 	sf::RenderWindow mWindow;
-	sf::Texture mTexture;
+	sf::Texture mBgTexture;
+	sf::Sprite mBackground;
+	sf::Texture mPTexture;
 	sf::Sprite mPlayer;
 
 	enum State

@@ -31,5 +31,11 @@
     <Image Include="Resources\chuttiya.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Resources\Desert.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\samplecharacter.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
