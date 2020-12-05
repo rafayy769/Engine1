@@ -62,3 +62,88 @@ void Game::run()
 		render();
 	}
 }
+
+Player::Player(std::string name, int uA, int mC, int cD, int sT)
+{
+	mName = name;
+	mUnarmedAttack = uA;
+	mMeleeAttack = mC;
+	mDefense = cD;
+	mThievery = sT;
+	mBaseAttr = getBaseAttr();
+}
+
+void Player::setSkill(int& skillType, int value)
+{
+	skillType = value;
+}
+
+int Player::getUnarmedAttack() const
+{
+	return mUnarmedAttack;
+}
+
+int Player::getMeleeAttack() const
+{
+	return mMeleeAttack;
+}
+
+int Player::getDefense() const
+{
+	return mDefense;
+}
+
+int Player::getThievery() const
+{
+	return mThievery;
+}
+
+void Player::setAllSkills()
+{
+	// Rafay, modify the commented lines so the player can set skill points
+	// in the graphics
+	int skillPointsLeft = 20;
+	int spUnarmed, spMelee, spDefense, spThievery;
+	//cout << "You have a total of 20 Skill points\nUse them wisely." << endl;
+	// do {
+	//if(skillPointsLeft < 0) cout << "try again, too many points allocated";
+	//cout << "Give points for unarmed attack: ";
+	//cin >> spUnarmed;
+	// skillPointsLeft -= spUnarmed;
+	//cout << "Give points for melee attack: ";
+	//cin >> spMelee;
+	// skillPointsLeft -= spMelee;
+	//cout << "Give points for melee attack: ";
+	//cin >> spDefense;
+	// skillPointsLeft -= spDefense;
+	//cout << "Give points for melee attack: ";
+	//cin >> spThievery;
+	// skillPointsLeft -= spThievery;
+	// } while(skillPointsLeft < 0);
+	mUnarmedAttack = mBaseAttr - 10 + spUnarmed;
+	mMeleeAttack = mBaseAttr - 10 + spMelee;
+	mDefense = mBaseAttr - 10 + spDefense;
+	mThievery = mBaseAttr - 10 + spThievery;
+	mHP = rand() % 10 + mDefense;
+}
+
+
+void Player::setAllSkills(int spUnarmed, int spMelee, int spDefense, int spThievery)
+{
+	mUnarmedAttack = mBaseAttr - 10 + spUnarmed;
+	mMeleeAttack = mBaseAttr - 10 + spMelee;
+	mDefense = mBaseAttr - 10 + spDefense;
+	mThievery = mBaseAttr - 10 + spThievery;
+	mHP = rand() % 10 + mDefense;
+}
+
+die::die(int maximum)
+{
+	mHighest = maximum;
+}
+
+int die::getRoll()
+{
+	srand(time(NULL));
+	return rand() % mHighest + 1;
+}
