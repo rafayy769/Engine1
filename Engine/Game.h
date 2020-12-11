@@ -3,31 +3,31 @@
 #include <cstdlib>
 #include <time.h>
 
-class Game
-{
-	sf::RenderWindow mWindow;
-	sf::Texture mBgTexture;
-	sf::Sprite mBackground;
-	sf::Texture mPTexture;
-	sf::Sprite mPlayer;
+// class Game
+// {
+// 	sf::RenderWindow mWindow;
+// 	sf::Texture mBgTexture;
+// 	sf::Sprite mBackground;
+// 	sf::Texture mPTexture;
+// 	sf::Sprite mPlayer;
 
-	enum State
-	{
-		PAUSED,
-		NOT_PAUSED
-	};
+// 	enum State
+// 	{
+// 		PAUSED,
+// 		NOT_PAUSED
+// 	};
 
-	void processEvents();
-	void update();
-	void render();
-	void handleInput(sf::Keyboard::Key);
+// 	void processEvents();
+// 	void update();
+// 	void render();
+// 	void handleInput(sf::Keyboard::Key);
 
-public:
-	Game();
-	Game(int x, int y, std::string title, std::string path);
+// public:
+// 	Game();
+// 	Game(int x, int y, std::string title, std::string path);
 
-	void run();
-};
+// 	void run();
+// };
 
 class Player
 {
@@ -39,8 +39,8 @@ private:
 	int mUnarmedAttack, mMeleeAttack, mDefense, mThievery;
 	int mBaseAttr;
 	int mHP;
-	
-	
+
+
 	int getBaseAttr()
 	{
 		srand(time(NULL));
@@ -48,21 +48,20 @@ private:
 	}
 public:
 	Player(std::string name, int uA, int mC, int cD, int sT);
+	Player(std::string name);
 	void setSkill(int& skillType, int value);
 	int getUnarmedAttack() const;
+	std::string getName() const;
 	int getMeleeAttack() const;
 	int getDefense() const;
 	int getThievery() const;
 	void setAllSkills();
+	int getRoll();
 	//below method are for non player fighters
 	void setAllSkills(int spUnarmed, int spMelee, int spDefense, int spThievery);
 };
 
-class die
-{
-private:
-	int mHighest;
-public:
-	die(int maximum);
-	int getRoll();
-};
+//console prototypes
+bool isPlayer1First(Player p1, Player p2);
+void runBattle(Player player1, Player player2);
+
