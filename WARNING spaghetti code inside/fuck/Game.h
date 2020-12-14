@@ -30,6 +30,14 @@
 // 	void run();
 // };
 
+
+enum turnChoice 
+{
+	LIGHT_ATTACK = 1,
+	DEFEND = 2,
+	STRONG_ATTACK = 0
+};
+
 class Player
 {
 private:
@@ -41,15 +49,12 @@ private:
 	int mBaseAttr;
 	int mHP;
 	bool isBot = false;
-	
-	int getBaseAttr()
-	{
-		srand(time(NULL));
-		return rand() % 16 + 3;
-	}
+	int mLastThreeOutcomes[3] = {0, 0, 0};
+	int mCounter; // tracks index to avoid overwriting outcomes array
+	double mLuckFactor;
 public:
 	bool defending = false;
-	Player(std::string name, int uA, int cD, int sT);
+	Player(std::string name, int uA, int cD);
 	Player(std::string name);
 	void setSkill(int& skillType, int value);
 	int getUnarmedAttack() const;
@@ -58,10 +63,13 @@ public:
 	int getThievery() const;
 	void setAllSkills();
 	int getRoll();
+	double findLuckFactor();
+	void recordOutcome(double result);
 	bool dealDamage(int damageDealt);
-	//below method are for non player fighters
-	void setAllSkills(int spUnarmed, int spDefense, int spThievery);
+	//below methods are for non player fighters
+	void setAllSkills(int spUnarmed, int spDefense);
 	bool getBot() const;
+	turnChoice decideTurn();
 };
 
 //console prototypes
@@ -88,5 +96,5 @@ std::string phrases[3][3] = {
 		" gave a strong jab to the head for maximum damage!",
 		" punched their opponent hard enough for maximum damage!"
 	}
-}
+};
 

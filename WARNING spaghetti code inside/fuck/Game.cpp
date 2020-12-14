@@ -63,23 +63,22 @@
 // 	}
 // }
 
-Player::Player(std::string name, int uA, int cD, int sT)
+Player::Player(std::string name, int uA, int cD)
 {
-	mBaseAttr = getBaseAttr();
+	srand(time(NULL));
+	mBaseAttr = (rand() % 16) + 3;
 	mName = name;
-	setAllSkills(uA, cD, sT);
+	mCounter = 0;
+	setAllSkills(uA, cD);
 }
 
 Player::Player(std::string name)
 {
-	mBaseAttr = getBaseAttr();
+	mCounter = 0;
+	srand(time(NULL));
+	mBaseAttr = (rand() % 16) + 3;
 	mName = name;
 	setAllSkills();
-}
-
-void Player::setSkill(int& skillType, int value)
-{
-	skillType = value;
 }
 
 std::string Player::getName() const
@@ -97,48 +96,40 @@ int Player::getDefense() const
 	return mDefense;
 }
 
-int Player::getThievery() const
-{
-	return mThievery;
-}
-
 void Player::setAllSkills()
 {
 	using namespace std;
-	int skillPointsLeft = 20;
+	int skillPointsLeft = 13;
 	int spUnarmed, spDefense, spThievery;
-	cout << "You have a total of 20 Skill points\nUse them wisely." << endl;
+	cout << "You have a total of 13 Skill points\nUse them wisely." << endl;
 	do {
 	if(skillPointsLeft < 0) 
 	{
 		cout << "try again, too many points allocated";
-		skillPointsLeft = 20;
+		skillPointsLeft = 13;
 	}
 	cout << "Give points for unarmed attack: ";
 	cin >> spUnarmed;
 	skillPointsLeft -= spUnarmed;
-	cout << "Give points for melee attack: ";
+	cout << "Give points for defense: ";
 	cin >> spDefense;
 	skillPointsLeft -= spDefense;
-	cout << "Give points for melee attack: ";
-	cin >> spThievery;
-	skillPointsLeft -= spThievery;
 	} while(skillPointsLeft < 0);
 
-	mUnarmedAttack = mBaseAttr - 10 + spUnarmed;
-	mDefense = mBaseAttr - 10 + spDefense;
-	mThievery = mBaseAttr - 10 + spThievery;
-	HP = 10 + mDefense;
+	mUnarmedAttack = (mBaseAttr - 10) + spUnarmed;
+	mUnarmedAttack < 0 ? mUnarmedAttack * -1 : mUnarmedAttack;
+	mDefense = mBaseAttr + spDefense;
+	mHP = mDefense;
 	isBot = false;
 }
 
 
-void Player::setAllSkills(int spUnarmed, int spDefense, int spThievery)
+void Player::setAllSkills(int spUnarmed, int spDefense)
 {
-	mUnarmedAttack = mBaseAttr - 10 + spUnarmed;
-	mDefense = mBaseAttr - 10 + spDefense;
-	mThievery = mBaseAttr - 10 + spThievery;
-	HP = 10 + mDefense;
+	mUnarmedAttack = (mBaseAttr - 10) + spUnarmed;
+	mUnarmedAttack < 0 ? mUnarmedAttack * -1 : mUnarmedAttack;
+	mDefense = mBaseAttr + spDefense;
+	mHP = mDefense;
 	isBot = true;
 }
 
@@ -146,16 +137,17 @@ void Player::setAllSkills(int spUnarmed, int spDefense, int spThievery)
 int Player::getRoll()
 {
 	srand(time(NULL));
-	int value = (rand() % 20) + 1;
+	mLuckFactor = findLuckFactor() * 1.5;
+	int value = ((rand() % 20) + 1) + int(mLuckFactor);
 	std::cout << mName << " rolls a " << value << "!" << std::endl;
 	return value;
 }
 
 bool Player::dealDamage(int damageDealt)
 {
+	mHP -= damageDealt;
 	if(mHP > 0)
 	{
-		mHP -= damageDealt;
 		return false;
 	} else
 	{
@@ -164,7 +156,45 @@ bool Player::dealDamage(int damageDealt)
 	
 }
 
+//below two methods are only for computer fighters
 bool Player::getBot() const
 {
 	return isBot;
+}
+
+turnChoice Player::decideTurn()
+{
+	if (mHP < 5)
+	{
+		if (mUnarmedAttack < 7)
+		{
+			return DEFEND; 
+		} else
+		{
+			return LIGHT_ATTACK; 
+		}
+	} else
+	{
+		if (mLuckFactor < 0)
+		{
+			return DEFEND;
+		} else
+		{
+			return STRONG_ATTACK; 
+		}
+		
+	}
+	
+}
+
+double Player::findLuckFactor()
+{
+	double outcomesSum = 0;
+	for (int i = 0; i < 3; i++) outcomesSum += mLastThreeOutcomes[i];
+	return outcomesSum;
+}
+
+void Player::recordOutcome(double result)
+{
+	mLastThreeOutcomes[mCounter++ % 3] = result; // look how many lines of code i saved here :-)
 }
