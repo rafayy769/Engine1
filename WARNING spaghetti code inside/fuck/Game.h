@@ -45,7 +45,7 @@ private:
 	   2: Defense, 3: Thievery
 	*/
 	std::string mName;
-	int mUnarmedAttack, mDefense, mThievery;
+	int mUnarmedAttack, mDefense;
 	int mBaseAttr;
 	int mHP;
 	bool isBot = false;
@@ -60,7 +60,6 @@ public:
 	int getUnarmedAttack() const;
 	std::string getName() const;
 	int getDefense() const;
-	int getThievery() const;
 	void setAllSkills();
 	int getRoll();
 	double findLuckFactor();
